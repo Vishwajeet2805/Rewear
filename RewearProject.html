@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Community Clothing Exchange</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: #2e8b57;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .auth-buttons .btn {
+            margin-left: 10px;
+        }
+        
+        /* Button Styles */
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #3cb371;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid #2e8b57;
+            color: #2e8b57;
+        }
+        
+        .btn-outline:hover {
+            background-color: #2e8b57;
+            color: white;
+        }
+        
+        /* Landing Page */
+        .hero {
+            background-color: #e8f5e9;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #2e8b57;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta-buttons {
+            margin-top: 1.5rem;
+        }
+        
+        .cta-buttons .btn {
+            margin: 0 10px;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Carousel */
+        .carousel {
+            margin: 3rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .carousel-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        
+        .carousel-item {
+            min-width: 100%;
+            padding: 0 15px;
+        }
+        
+        .carousel-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        .carousel-item h3 {
+            margin-top: 1rem;
+            color: #2e8b57;
+        }
+        
+        .carousel-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #ccc;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        
+        .carousel-dot.active {
+            background-color: #2e8b57;
+        }
+        
+        /* Dashboard */
+        .dashboard {
+            display: none;
+            padding: 2rem 0;
+        }
+        
+        .profile-section, .items-section, .swaps-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            color: #2e8b57;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .profile-pic {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .points-balance {
+            background-color: #e8f5e9;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        
+        .points-balance span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2e8b57;
+        }
+        
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .item-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .item-card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .item-card-info {
+            padding: 1rem;
+        }
+        
+        .item-card-info h4 {
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+        
+        .item-card-info p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+        
+        .swap-list {
+            list-style: none;
+        }
+        
+        .swap-item {
+            padding: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .swap-item-info h4 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .swap-item-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .swap-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .swap-status.pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .swap-status.completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        /* Item Detail Page */
+        .item-detail {
+            display: none;
+            padding: 2rem 0;
+        }
+        
+        .item-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .item-gallery {
+            position: relative;
+        }
+        
+        .main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        .thumbnail-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+        
+        .thumbnail:hover, .thumbnail.active {
+            opacity: 1;
+        }
+        
+        .item-info h2 {
+            color: #2e8b57;
+            margin-bottom: 1rem;
+        }
+        
+        .item-meta {
+            margin-bottom: 1.5rem;
+        }
+        
+        .item-meta p {
+            margin-bottom: 0.5rem;
+            color: #666;
+        }
+        
+        .item-meta span {
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .uploader-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .uploader-pic {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ddd;
+            margin-right: 1rem;
+            overflow: hidden;
+        }
+        
+        .uploader-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .item-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .availability {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .available {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .unavailable {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        /* Add Item Page */
+        .add-item {
+            display: none;
+            padding: 2rem 0;
+        }
+        
+        .add-item-form {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #2e8b57;
+        }
+        
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .image-upload {
+            border: 2px dashed #ddd;
+            padding: 2rem;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        
+        .image-upload:hover {
+            border-color: #2e8b57;
+        }
+        
+        .image-upload p {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .preview-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .preview-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .remove-image {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            padding: 2rem 0;
+        }
+        
+        .admin-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pending-items {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .item-review {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item-review:last-child {
+            border-bottom: none;
+        }
+        
+        .item-review-images {
+            width: 120px;
+        }
+        
+        .item-review-images img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        
+        .item-review-info {
+            flex: 1;
+        }
+        
+        .item-review-actions {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        /* Authentication Forms */
+        .auth-form {
+            display: none;
+            max-width: 500px;
+            margin: 2rem auto;
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .auth-form h2 {
+            color: #2e8b57;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+        
+        .form-footer a {
+            color: #2e8b57;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-column h3 {
+            color: #2e8b57;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: #2e8b57;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .item-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .item-gallery {
+                margin-bottom: 2rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Active Page Indicator */
+        .active-page {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">ReWear</div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="browse">Browse Items</a></li>
+                    <li><a href="#" class="nav-link" data-page="dashboard">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" data-page="add-item">List an Item</a></li>
+                </ul>
+                <div class="auth-buttons">
+                    <button class="btn btn-outline" id="login-btn">Login</button>
+                    <button class="btn" id="signup-btn">Sign Up</button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Landing Page -->
+    <section class="hero" id="home-page">
+        <div class="container">
+            <h1>Swap Clothes, Save the Planet</h1>
+            <p>Join our community clothing exchange to give your unused garments a new life while finding unique pieces for your wardrobe. Sustainable fashion starts here.</p>
+            <div class="cta-buttons">
+                <a href="#" class="btn" data-page="add-item">Start Swapping</a>
+                <a href="#" class="btn btn-outline" data-page="browse">Browse Items</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Items Carousel -->
+    <section class="carousel container">
+        <h2 class="section-title">Featured Items</h2>
+        <div class="carousel-container" id="carousel">
+            <div class="carousel-item">
+                <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Denim Jacket">
+                <h3>Vintage Denim Jacket</h3>
+                <p>Size M | Excellent Condition | 150 points</p>
+            </div>
+            <div class="carousel-item">
+                <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Floral Dress">
+                <h3>Floral Summer Dress</h3>
+                <p>Size S | Like New | 200 points</p>
+            </div>
+            <div class="carousel-item">
+                <img src="https://images.unsplash.com/photo-1520367445093-50dc08a59d9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Leather Boots">
+                <h3>Brown Leather Boots</h3>
+                <p>Size 8 | Good Condition | 250 points</p>
+            </div>
+        </div>
+        <div class="carousel-nav">
+            <div class="carousel-dot active" data-index="0"></div>
+            <div class="carousel-dot" data-index="1"></div>
+            <div class="carousel-dot" data-index="2"></div>
+        </div>
+    </section>
+
+    <!-- User Dashboard -->
+    <section class="dashboard container" id="dashboard-page">
+        <div class="profile-section">
+            <h2 class="section-title">My Profile</h2>
+            <div class="profile-info">
+                <div class="profile-pic">
+                    <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Profile Picture">
+                </div>
+                <div>
+                    <h3>Jane Doe</h3>
+                    <p>Member since June 2023</p>
+                    <p>15 successful swaps</p>
+                </div>
+            </div>
+            <div class="points-balance">
+                <p>Your Points Balance</p>
+                <span>1,250</span>
+            </div>
+        </div>
+        
+        <div class="items-section">
+            <h2 class="section-title">My Listed Items</h2>
+            <div class="items-grid">
+                <div class="item-card">
+                    <img src="https://images.unsplash.com/photo-1520367445093-50dc08a59d9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Leather Boots">
+                    <div class="item-card-info">
+                        <h4>Brown Leather Boots</h4>
+                        <p>Size 8 | Good Condition</p>
+                        <p>250 points</p>
+                        <p class="availability available">Available</p>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="https://images.unsplash.com/photo-1543076447-215ad9ba6923?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Winter Coat">
+                    <div class="item-card-info">
+                        <h4>Winter Wool Coat</h4>
+                        <p>Size M | Excellent Condition</p>
+                        <p>300 points</p>
+                        <p class="availability available">Available</p>
+                    </div>
+                </div>
+                <div class="item-card">
+                    <img src="https://images.unsplash.com/photo-1473966968600-fa801b869a1a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Summer Dress">
+                    <div class="item-card-info">
+                        <h4>Blue Summer Dress</h4>
+                        <p>Size S | Like New</p>
+                        <p>180 points</p>
+                        <p class="availability unavailable">Pending Swap</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="swaps-section">
+            <h2 class="section-title">My Swaps</h2>
+            <ul class="swap-list">
+                <li class="swap-item">
+                    <div class="swap-item-info">
+                        <h4>Floral Summer Dress</h4>
+                        <p>Swap with: Sarah Johnson</p>
+                        <p>Requested: 2 days ago</p>
+                    </div>
+                    <span class="swap-status pending">Pending</span>
+                </li>
+                <li class="swap-item">
+                    <div class="swap-item-info">
+                        <h4>Denim Jacket</h4>
+                        <p>Swap with: Michael Brown</p>
+                        <p>Completed: 1 week ago</p>
+                    </div>
+                    <span class="swap-status completed">Completed</span>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Item Detail Page -->
+    <section class="item-detail container" id="item-detail-page">
+        <div class="item-container">
+            <div class="item-gallery">
+                <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Floral Dress" class="main-image">
+                <div class="thumbnail-container">
+                    <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Floral Dress Front" class="thumbnail active">
+                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Floral Dress Back" class="thumbnail">
+                    <img src="https://images.unsplash.com/photo-1525507119028-ed4c629a60a3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Floral Dress Detail" class="thumbnail">
+                </div>
+            </div>
+            <div class="item-info">
+                <h2>Floral Summer Dress</h2>
+                <p class="availability available">Available</p>
+                
+                <div class="item-meta">
+                    <p><strong>Category:</strong> <span>Dresses</span></p>
+                    <p><strong>Type:</strong> <span>Summer Dress</span></p>
+                    <p><strong>Size:</strong> <span>S</span></p>
+                    <p><strong>Condition:</strong> <span>Like New</span></p>
+                    <p><strong>Points Value:</strong> <span>200</span></p>
+                    <p><strong>Tags:</strong> <span>floral, summer, casual</span></p>
+                </div>
+                
+                <div class="uploader-info">
+                    <div class="uploader-pic">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Uploader Picture">
+                    </div>
+                    <div>
+                        <h4>Emily Wilson</h4>
+                        <p>Member since May 2023</p>
+                    </div>
+                </div>
+                
+                <h3>Description</h3>
+                <p>Beautiful floral summer dress with a comfortable fit. Worn only a couple of times. Perfect for warm weather with its light fabric and vibrant colors. The dress has a slightly fitted waist and flows out to an A-line shape.</p>
+                
+                <div class="item-actions">
+                    <button class="btn">Request Swap</button>
+                    <button class="btn btn-outline">Redeem with Points</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add New Item Page -->
+    <section class="add-item container" id="add-item-page">
+        <h1 class="section-title">List a New Item</h1>
+        <div class="add-item-form">
+            <form id="item-form">
+                <div class="form-group">
+                    <label for="item-title">Item Title</label>
+                    <input type="text" id="item-title" class="form-control" placeholder="e.g. Vintage Denim Jacket" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-description">Description</label>
+                    <textarea id="item-description" class="form-control" placeholder="Describe your item in detail..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Upload Images (Max 5)</label>
+                    <div class="image-upload" id="image-upload">
+                        <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#2e8b57" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <p>Click to upload or drag and drop</p>
+                        <input type="file" id="file-input" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div class="preview-images" id="preview-images"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-category">Category</label>
+                    <select id="item-category" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="tops">Tops</option>
+                        <option value="bottoms">Bottoms</option>
+                        <option value="dresses">Dresses</option>
+                        <option value="outerwear">Outerwear</option>
+                        <option value="shoes">Shoes</option>
+                        <option value="accessories">Accessories</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-type">Type</label>
+                    <input type="text" id="item-type" class="form-control" placeholder="e.g. T-shirt, Jeans, Dress" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-size">Size</label>
+                    <select id="item-size" class="form-control" required>
+                        <option value="">Select size</option>
+                        <option value="xs">XS</option>
+                        <option value="s">S</option>
+                        <option value="m">M</option>
+                        <option value="l">L</option>
+                        <option value="xl">XL</option>
+                        <option value="xxl">XXL</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-condition">Condition</label>
+                    <select id="item-condition" class="form-control" required>
+                        <option value="">Select condition</option>
+                        <option value="new">New with tags</option>
+                        <option value="like-new">Like new</option>
+                        <option value="excellent">Excellent</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-points">Points Value</label>
+                    <input type="number" id="item-points" class="form-control" placeholder="Enter points value" min="10" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="item-tags">Tags (comma separated)</label>
+                    <input type="text" id="item-tags" class="form-control" placeholder="e.g. vintage, denim, casual">
+                </div>
+                
+                <button type="submit" class="btn">List Item</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section class="admin-panel container" id="admin-panel">
+        <h1 class="section-title">Admin Dashboard</h1>
+        
+        <div class="admin-actions">
+            <button class="btn">View All Listings</button>
+            <button class="btn btn-outline">View Reported Items</button>
+            <button class="btn btn-outline">Manage Users</button>
+        </div>
+        
+        <div class="pending-items">
+            <h2 class="section-title">Pending Approvals (3)</h2>
+            
+            <div class="item-review">
+                <div class="item-review-images">
+                    <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Denim Jacket">
+                </div>
+                <div class="item-review-info">
+                    <h4>Vintage Denim Jacket</h4>
+                    <p>Posted by: user123 | 2 hours ago</p>
+                    <p>Category: Outerwear | Size: M | Condition: Good</p>
+                    <p>Description: Vintage denim jacket from the 90s. Some fading but no tears or stains.</p>
+                </div>
+                <div class="item-review-actions">
+                    <button class="btn">Approve</button>
+                    <button class="btn btn-outline">Reject</button>
+                </div>
+            </div>
+            
+            <div class="item-review">
+                <div class="item-review-images">
+                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Sneakers">
+                </div>
+                <div class="item-review-info">
+                    <h4>White Sneakers</h4>
+                    <p>Posted by: fashionlover | 5 hours ago</p>
+                    <p>Category: Shoes | Size: 9 | Condition: Like New</p>
+                    <p>Description: Brand white sneakers, worn only twice. Comes with original box.</p>
+                </div>
+                <div class="item-review-actions">
+                    <button class="btn">Approve</button>
+                    <button class="btn btn-outline">Reject</button>
+                </div>
+            </div>
+            
+            <div class="item-review">
+                <div class="item-review-images">
+                    <img src="https://images.unsplash.com/photo-1520367445093-50dc08a59d9d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Leather Boots">
+                </div>
+                <div class="item-review-info">
+                    <h4>Brown Leather Boots</h4>
+                    <p>Posted by: shoeguy | 1 day ago</p>
+                    <p>Category: Shoes | Size: 8 | Condition: Excellent</p>
+                    <p>Description: Genuine leather boots with minimal wear. Great for fall weather.</p>
+                </div>
+                <div class="item-review-actions">
+                    <button class="btn">Approve</button>
+                    <button class="btn btn-outline">Reject</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Form -->
+    <div class="auth-form container" id="login-form">
+        <h2>Login to ReWear</h2>
+        <form>
+            <div class="form-group">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" class="form-control" placeholder="Enter your password" required>
+            </div>
+            
+            <button type="submit" class="btn">Login</button>
+            
+            <div class="form-footer">
+                <p>Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+                <p><a href="#">Forgot password?</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="auth-form container" id="signup-form">
+        <h2>Join ReWear</h2>
+        <form>
+            <div class="form-group">
+                <label for="signup-name">Full Name</label>
+                <input type="text" id="signup-name" class="form-control" placeholder="Enter your full name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="signup-email">Email</label>
+                <input type="email" id="signup-email" class="form-control" placeholder="Enter your email" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" class="form-control" placeholder="Create a password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="signup-confirm">Confirm Password</label>
+                <input type="password" id="signup-confirm" class="form-control" placeholder="Confirm your password" required>
+            </div>
+            
+            <button type="submit" class="btn">Create Account</button>
+            
+            <div class="form-footer">
+                <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+            </div>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About ReWear</h3>
+                    <ul>
+                        <li><a href="#">Our Mission</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Sustainability Impact</a></li>
+                        <li><a href="#">Team</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Help Center</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Shipping & Returns</a></li>
+                        <li><a href="#">Points System</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Community</h3>
+                    <ul>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Partnerships</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 ReWear - Community Clothing Exchange. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide all pages except home
+            document.querySelectorAll('section[id$="-page"], .auth-form, .admin-panel').forEach(page => {
+                page.style.display = 'none';
+            });
+            document.getElementById('home-page').style.display = 'block';
+            
+            // Set up navigation links
+            document.querySelectorAll('[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page') + '-page';
+                    
+                    // Hide all pages
+                    document.querySelectorAll('section[id$="-page"], .auth-form, .admin-panel').forEach(page => {
+                        page.style.display = 'none';
+                    });
+                    
+                    // Show selected page
+                    document.getElementById(pageId).style.display = 'block';
+                    
+                    // Update active nav link
+                    document.querySelectorAll('.nav-link').forEach(navLink => {
+                        navLink.classList.remove('active-page');
+                    });
+                    
+                    if (this.classList.contains('nav-link')) {
+                        this.classList.add('active-page');
+                    }
+                });
+            });
+            
+            // Set up auth buttons
+            document.getElementById('login-btn').addEventListener('click', function() {
+                document.querySelectorAll('section[id$="-page"], .auth-form, .admin-panel').forEach(page => {
+                    page.style.display = 'none';
+                });
+                document.getElementById('login-form').style.display = 'block';
+            });
+            
+            document.getElementById('signup-btn').addEventListener('click', function() {
+                document.querySelectorAll('section[id$="-page"], .auth-form, .admin-panel').forEach(page => {
+                    page.style.display = 'none';
+                });
+                document.getElementById('signup-form').style.display = 'block';
+            });
+            
+            // Toggle between login and signup forms
+            document.getElementById('show-signup').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('signup-form').style.display = 'block';
+            });
+            
+            document.getElementById('show-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('signup-form').style.display = 'none';
+                document.getElementById('login-form').style.display = 'block';
+            });
+            
+            // Carousel functionality
+            const carousel = document.getElementById('carousel');
+            const dots = document.querySelectorAll('.carousel-dot');
+            let currentIndex = 0;
+            
+            function updateCarousel() {
+                carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+                
+                dots.forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentIndex);
+                });
+            }
+            
+            dots.forEach(dot => {
+                dot.addEventListener('click', function() {
+                    currentIndex = parseInt(this.getAttribute('data-index'));
+                    updateCarousel();
+                });
+            });
+            
+            // Auto-advance carousel
+            setInterval(() => {
+                currentIndex = (currentIndex + 1) % dots.length;
+                updateCarousel();
+            }, 5000);
+            
+            // Image upload preview
+            const imageUpload = document.getElementById('image-upload');
+            const fileInput = document.getElementById('file-input');
+            const previewImages = document.getElementById('preview-images');
+            
+            imageUpload.addEventListener('click', function() {
+                fileInput.click();
+            });
+            
+            fileInput.addEventListener('change', function() {
+                previewImages.innerHTML = '';
+                
+                if (fileInput.files.length > 5) {
+                    alert('You can upload a maximum of 5 images');
+                    return;
+                }
+                
+                Array.from(fileInput.files).forEach(file => {
+                    if (!file.type.match('image.*')) {
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        const previewImage = document.createElement('div');
+                        previewImage.className = 'preview-image';
+                        previewImage.style.backgroundImage = `url(${e.target.result})`;
+                        
+                        const removeImage = document.createElement('div');
+                        removeImage.className = 'remove-image';
+                        removeImage.innerHTML = '&times;';
+                        removeImage.addEventListener('click', function(e) {
+                            e.stopPropagation();
+                            previewImage.remove();
+                        });
+                        
+                        previewImage.appendChild(removeImage);
+                        previewImages.appendChild(previewImage);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                });
+            });
+            
+            // Thumbnail click handler for item detail page
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', function() {
+                    document.querySelector('.thumbnail.active').classList.remove('active');
+                    this.classList.add('active');
+                    document.querySelector('.main-image').src = this.src;
+                });
+            });
+            
+            // Form submission
+            document.getElementById('item-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Item submitted successfully! It will be visible after admin approval.');
+                // Reset form
+                this.reset();
+                previewImages.innerHTML = '';
+                // Navigate to dashboard
+                document.querySelectorAll('section[id$="-page"], .auth-form, .admin-panel').forEach(page => {
+                    page.style.display = 'none';
+                });
+                document.getElementById('dashboard-page').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
